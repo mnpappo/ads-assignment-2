@@ -38,33 +38,48 @@ indicators = [
     "EG.ELC.COAL.ZS",
 ]
 
-# Filter the data for the USA and China
-usa_data = df[(df["Country Code"] == "USA") & (df["Indicator Code"].isin(indicators))]
-china_data = df[(df["Country Code"] == "CHN") & (df["Indicator Code"].isin(indicators))]
 
-# Combine USA and China data
-combined_data = pd.concat([usa_data, china_data])
+def process_data(indicators, df):
+    """
+    Process and clean the data
+    params: indicators, df
+    return: df, df_transposed
+    """
+    # Filter the data for the USA and China
+    usa_data = df[
+        (df["Country Code"] == "USA") & (df["Indicator Code"].isin(indicators))
+    ]
+    china_data = df[
+        (df["Country Code"] == "CHN") & (df["Indicator Code"].isin(indicators))
+    ]
 
-# Make suer 'Year' columns are integers and get their list
-year_columns = [col for col in combined_data if col.isnumeric()]
+    # Combine USA and China data
+    combined_data = pd.concat([usa_data, china_data])
 
-# Set the 'Country Code' and 'Indicator Code' as index
-combined_data.set_index(["Country Code", "Indicator Code"], inplace=True)
+    # Make suer 'Year' columns are integers and get their list
+    year_columns = [col for col in combined_data if col.isnumeric()]
 
-# Transpose the data to have years as rows
-combined_data_transposed = combined_data[year_columns].transpose()
-print(combined_data_transposed.head())
-print(combined_data_transposed.describe())
+    # Set the 'Country Code' and 'Indicator Code' as index
+    combined_data.set_index(["Country Code", "Indicator Code"], inplace=True)
 
-# Convert the index to datetime, now index represents years
-combined_data_transposed.index = pd.to_datetime(
-    combined_data_transposed.index, format="%Y"
-)
+    # Transpose the data to have years as rows
+    combined_data_transposed = combined_data[year_columns].transpose()
+    print(combined_data_transposed.head())
+    print(combined_data_transposed.describe())
 
-# Convert all columns to numeric data type
-combined_data_transposed = combined_data_transposed.apply(
-    pd.to_numeric, errors="coerce"
-)
+    # Convert the index to datetime, now index represents years
+    combined_data_transposed.index = pd.to_datetime(
+        combined_data_transposed.index, format="%Y"
+    )
+
+    # Convert all columns to numeric data type
+    combined_data_transposed = combined_data_transposed.apply(
+        pd.to_numeric, errors="coerce"
+    )
+    return combined_data, combined_data_transposed
+
+
+combined_data, combined_data_transposed = process_data(indicators, df)
 
 print(combined_data_transposed.head())
 
