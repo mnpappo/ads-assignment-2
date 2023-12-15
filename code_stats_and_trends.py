@@ -81,45 +81,53 @@ def process_data(indicators, df):
 
 combined_data, combined_data_transposed = process_data(indicators, df)
 
-print(combined_data_transposed.head())
 
-# plot row col layout calculation #
-# Number of rows for the subplots
-num_rows = (len(indicators) + 1) // 2
+def visualize_data(combined_data_transposed, indicators):
+    """
+    Visualize the data
+    params: combined_data_transposed, indicators
+    return: None
+    """
+    # plot row col layout calculation #
+    # Number of rows for the subplots
+    num_rows = (len(indicators) + 1) // 2
 
-# Prepare the figure layout with 2 columns
-fig, axes = plt.subplots(nrows=num_rows, ncols=2, figsize=(14, 6 * num_rows))
+    # Prepare the figure layout with 2 columns
+    fig, axes = plt.subplots(nrows=num_rows, ncols=2, figsize=(14, 6 * num_rows))
 
-# Flatten the axes array for easy iteration
-axes = axes.flatten()
+    # Flatten the axes array for easy iteration
+    axes = axes.flatten()
 
-# Loop through each indicator and plot it
-for index, indicator in enumerate(indicators):
-    ax = axes[index]
+    # Loop through each indicator and plot it
+    for index, indicator in enumerate(indicators):
+        ax = axes[index]
 
-    # Plot USA data
-    ax.plot(
-        combined_data_transposed.index,
-        combined_data_transposed[("USA", indicator)],
-        label=f"USA {indicator}",
-        # label=combined_data.at[indicator, "Indicator Name"],
-        marker="o",
-    )
-    # Plot China data
-    ax.plot(
-        combined_data_transposed.index,
-        combined_data_transposed[("CHN", indicator)],
-        label=f"China {indicator}",
-        marker="^",
-    )
+        # Plot USA data
+        ax.plot(
+            combined_data_transposed.index,
+            combined_data_transposed[("USA", indicator)],
+            label=f"USA {indicator}",
+            # label=combined_data.at[indicator, "Indicator Name"],
+            marker="o",
+        )
+        # Plot China data
+        ax.plot(
+            combined_data_transposed.index,
+            combined_data_transposed[("CHN", indicator)],
+            label=f"China {indicator}",
+            marker="^",
+        )
 
-    # Adding labels and title to each subplot
-    ax.set_xlabel("Year")
-    ax.set_ylabel("Values")
-    ax.set_title(f"{indicator} Over Time")
-    ax.legend()
-    ax.grid(True)
+        # Adding labels and title to each subplot
+        ax.set_xlabel("Year")
+        ax.set_ylabel("Values")
+        ax.set_title(f"{indicator} Over Time")
+        ax.legend()
+        ax.grid(True)
 
-# Adjust layout
-plt.tight_layout()
-plt.show()
+    # Adjust layout
+    plt.tight_layout()
+    plt.show()
+
+
+visualize_data(combined_data_transposed, indicators)
