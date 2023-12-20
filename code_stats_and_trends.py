@@ -131,49 +131,6 @@ def visualize_data(combined_data_transposed, indicators):
     plt.show()
 
 
-# visalize heat map
-# def visualize_heat_map(combined_data_transposed, indicators):
-#     """
-#     Visualize the data
-#     params: df
-#     return: None
-#     """
-#     # Normalize the data for heatmap
-#     normalized_data = (combined_data_transposed - combined_data_transposed.min()) / (
-#         combined_data_transposed.max() - combined_data_transposed.min()
-#     )
-
-#     for indicator in indicators:
-#         plt.figure(figsize=(10, 8))
-
-#         # Get the data for the heatmap
-#         heatmap_data = normalized_data.xs(
-#             indicator, level="Indicator Code", axis=1
-#         ).values
-
-#         # Create the heatmap
-#         plt.imshow(heatmap_data, aspect="auto", cmap="viridis")
-
-#         # Add color bar
-#         plt.colorbar()
-
-#         # Add titles and labels
-#         plt.title(f"Heatmap of {indicator}")
-#         plt.ylabel("Year")
-#         plt.xlabel("Country")
-
-#         # Set the y-axis labels to years
-#         plt.yticks(
-#             np.arange(len(combined_data_transposed.index)),
-#             [year.year for year in combined_data_transposed.index],
-#         )
-
-#         # Set the x-axis labels to countries
-#         plt.xticks(np.arange(2), combined_data_transposed.columns.levels[0])
-
-#         plt.show()
-
-
 explore_statistics(df)
 # CO2 data
 combined_data_co2, combined_data_transposed_co2 = process_data(indicators_co2, df)
@@ -184,5 +141,3 @@ visualize_data(combined_data_transposed_co2, indicators_co2)
 combined_data_elec, combined_data_transposed_elec = process_data(indicators_elec, df)
 explore_statistics(combined_data_transposed_elec)
 visualize_data(combined_data_transposed_elec, indicators_elec)
-
-# visualize_heat_map(combined_data_transposed, indicators)
